@@ -37,4 +37,5 @@ app.get('/', (req, res)=>{
     res.send("Hello Express")
 })
 
-app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+// app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+module.exports = app
