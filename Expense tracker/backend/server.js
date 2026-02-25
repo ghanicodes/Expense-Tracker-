@@ -33,5 +33,8 @@ app.use("/api/v1/dashboard", dashboardRoutes);
 
 
 const PORT = process.env.PORT || 5000;
+app.get('/', (req, res)=>{
+    res.send("Hello Express")
+})
 
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
