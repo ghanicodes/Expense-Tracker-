@@ -7,7 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const incomeRoutes = require("./routes/incomeRoutes");
 const cookieParser = require("cookie-parser");
-const dashboardRoutes = require("./routes/dashboardRoutes")
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
 
@@ -37,5 +37,5 @@ app.get('/', (req, res)=>{
     res.send("Hello Express")
 })
 
-// app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
 module.exports = app

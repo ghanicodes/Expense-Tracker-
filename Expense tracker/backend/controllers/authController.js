@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const uploadToCloudinary = require("./imageController")
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -10,7 +11,7 @@ const generateToken = (id) => {
 
 // REGISTER USER
 exports.registerUser = async (req, res) => {
-  const { fullName, email, password, profileImageUrl } = req.body;
+  const { fullName, email, password } = req.body;
 
   // Validation
   if (!fullName || !email || !password) {
@@ -25,6 +26,15 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
+    let imageUrl = null;
+
+    if (req.file) {
+
+    const result = await uploadToCloudinary(req.file.buffer);
+
+      imageUrl = result.secure_url;
+    }
+
     // PASSWORD HASH
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -32,7 +42,7 @@ exports.registerUser = async (req, res) => {
       fullName,
       email,
       password: hashedPassword,
-      profileImageUrl,
+      profileImageUrl: imageUrl,
     });
 
     res.status(201).json({

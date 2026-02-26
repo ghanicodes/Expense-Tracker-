@@ -5,63 +5,68 @@ import Input from '../../components/Inputs/Input';
 import { validateEmail } from '../../utils/helper';
 import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
 
-
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
-  // Handel Sigup Form Submit
+
+  // Handle Signup
   const handleSignUp = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      let ProfileImageUrl = "";
-      if (!fullName) {
-        setError("Please Enter Your Name")
-        return;
-      }
-      if (!validateEmail(email)) {
-        setError("Please Enter s valid email address.")
-        return;
-      }
-      if (!password) {
-        setError("Please enter the password");
-        return;
-      }
-      setError("");
+    // Validation
+    if (!fullName) {
+      setError("Please enter your name");
+      return;
+    }
 
-      try {
-        const response = await fetch("http://localhost:8000/api/v1/auth/signup",{
-        method: "POST",
-        headers:{
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          fullName,
-          email,
-          password
-        })
-      });
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
 
-        const data = await response.json()
+    if (!password) {
+      setError("Please enter a password");
+      return;
+    }
+
+    setError("");
+
+    try {
+      const formData = new FormData();
+      formData.append("fullName", fullName);
+      formData.append("email", email);
+      formData.append("password", password);
+
+      if (profilePic) {
+        formData.append("image", profilePic);
+      }
+
+      const response = await fetch(
+        "http://localhost:8000/api/v1/auth/register",
+        {
+          method: "POST",
+          body: formData, 
+        }
+      );
+
+      const data = await response.json();
 
       if (!response.ok) {
-      throw new Error(data.message || "SignUp failed");
+        throw new Error(data.message || "Signup failed");
       }
-      
-     // Redirect to Login
-    navigate("/login");
 
-      } catch (error) {
-        console.log("Signup Error", error.message);
-          setError(error.message);
-      }
-   
-  }
+      navigate("/login");
+
+    } catch (error) {
+      console.log("Signup Error:", error.message);
+      setError(error.message);
+    }
+  };
   
   return (
     <AuthLayout>

@@ -8,7 +8,7 @@ import {
   Loader2,
 } from "lucide-react";
 
-const AddIncome = () => {
+const AddIncome = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -65,6 +65,11 @@ const AddIncome = () => {
       }
 
       alert("Income Added Successfully ");
+
+       if (onSuccess) {
+        onSuccess();
+       }
+
 
       setFormData({
         title: "",

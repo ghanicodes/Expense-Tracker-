@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PlusCircle, DollarSign, Tag, Calendar, PenTool, Loader2 } from 'lucide-react';
 
-const AddExpenseForm = () => {
+const AddExpenseForm = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -50,6 +50,10 @@ const AddExpenseForm = () => {
 
     console.log("Success:", data);
     alert("Expense Added Successfully ");
+    
+          if (onSuccess) {
+        onSuccess();
+          }
 
     // Reset form
     setFormData({
